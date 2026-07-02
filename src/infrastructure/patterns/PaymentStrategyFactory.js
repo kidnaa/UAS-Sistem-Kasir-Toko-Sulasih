@@ -1,3 +1,4 @@
+// Strategy Pattern: setiap strategi punya aturan berbeda untuk menghitung kembalian
 class CashPaymentStrategy {
   calculateChange(total, paidAmount) {
     if (paidAmount < total) {
@@ -22,6 +23,8 @@ class ExactPaymentStrategy {
   }
 }
 
+// Factory Pattern: menentukan strategi pembayaran mana yang dipakai
+// berdasarkan metode pembayaran yang dikirim dari transaksi
 export class PaymentStrategyFactory {
   create(method) {
     if (method === "exact") {

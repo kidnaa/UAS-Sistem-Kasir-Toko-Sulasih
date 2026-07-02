@@ -6,17 +6,18 @@ export class TransactionService {
     this.transactionRepository = transactionRepository;
     this.paymentStrategyFactory = paymentStrategyFactory;
   }
+
   async getById(id) {
-  const transaction = await this.transactionRepository.findById(id);
+    const transaction = await this.transactionRepository.findById(id);
 
-  if (!transaction) {
-    const error = new Error("Transaksi tidak ditemukan");
-    error.statusCode = 404;
-    throw error;
+    if (!transaction) {
+      const error = new Error("Transaksi tidak ditemukan");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return transaction;
   }
-
-  return transaction;
-}
 
   async checkout(payload) {
     const cashierId = Number(payload.cashierId);
@@ -65,6 +66,9 @@ export class TransactionService {
       });
 
       const total = transaction.total();
+
+      // Factory memilih strategi pembayaran sesuai paymentMethod,
+      // lalu strategi itu yang menghitung kembalian
       const strategy = this.paymentStrategyFactory.create(transaction.paymentMethod);
       const changeAmount = strategy.calculateChange(total, transaction.paidAmount);
 

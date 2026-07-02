@@ -3,7 +3,6 @@ import { Router } from "express";
 export function createTransactionRouter(transactionService) {
   const router = Router();
 
-  // GET ALL
   router.get("/", async (_req, res, next) => {
     try {
       const transactions = await transactionService.listRecent();
@@ -13,7 +12,6 @@ export function createTransactionRouter(transactionService) {
     }
   });
 
-  // CHECKOUT
   router.post("/", async (req, res, next) => {
     try {
       const transaction = await transactionService.checkout(req.body);
@@ -23,7 +21,7 @@ export function createTransactionRouter(transactionService) {
     }
   });
 
-  // 🧾 RECEIPT (YANG KAMU TAMBAH)
+  // Menampilkan struk transaksi dalam bentuk halaman HTML yang siap diprint
   router.get("/receipt/:id", async (req, res, next) => {
     try {
       const trx = await transactionService.getById(req.params.id);
@@ -48,7 +46,6 @@ export function createTransactionRouter(transactionService) {
             </style>
           </head>
           <body>
-
             <div class="center">
               <h3>TOKO SULASIH</h3>
               <p>STRUK PEMBELIAN</p>
@@ -75,11 +72,9 @@ export function createTransactionRouter(transactionService) {
             <script>
               window.print();
             </script>
-
           </body>
         </html>
       `);
-
     } catch (error) {
       next(error);
     }
