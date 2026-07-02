@@ -1,6 +1,6 @@
 # Sistem Kasir Toko Sulasih
 
-Sistem Kasir Toko Sulasih adalah aplikasi POS sederhana untuk proses penjualan, pengelolaan produk, stok barang, riwayat transaksi, dan laporan penjualan. Proyek ini adalah implementasi UAS dari rancangan SRS/UTS.
+Sistem Kasir Toko Sulasih adalah aplikasi POS sederhana untuk proses penjualan, pengelolaan produk, stok barang, riwayat transaksi, dan laporan penjualan. Proyek ini adalah implementasi UAS dari rangkaian tugas mata kuliah.
 
 ## Fitur Utama
 
@@ -22,9 +22,9 @@ Sistem Kasir Toko Sulasih adalah aplikasi POS sederhana untuk proses penjualan, 
 ## Cara Menjalankan Lokal
 
 1. Jalankan MySQL dari XAMPP dan pastikan aktif di port 3306.
-2. Buat database kasir\_toko\_sulasih lewat phpMyAdmin.
+2. Buat database kasir_toko_sulasih lewat phpMyAdmin.
 3. Import file database.sql ke database tersebut.
-4. Pastikan file .env memakai APP\_PORT=3000, DB\_HOST=localhost, DB\_PORT=3306, DB\_USER=root, DB\_PASSWORD kosong, dan DB\_NAME=kasir\_toko\_sulasih.
+4. Pastikan file .env memakai APP_PORT=3000, DB_HOST=localhost, DB_PORT=3306, DB_USER=root, DB_PASSWORD kosong, dan DB_NAME=kasir_toko_sulasih.
 5. Jalankan npm install.
 6. Jalankan npm start.
 7. Buka http://localhost:3000 di browser.
@@ -53,11 +53,15 @@ Proyek menggunakan Layered Architecture dengan pembagian berikut:
 
 Jalankan npm run lint untuk membuktikan kode bebas error linter.
 
-## Kontribusi Anggota
+## Kontribusi Anggota & Pembagian Tugas
 
-## 
+| Nama | NIM | Peran | Fitur yang Dikerjakan | Link Video Penjelasan |
+| --- | --- | --- | --- | --- |
+| Krisna Aji Manggala | 42430013 | Backend (Lead) | Implementasi transaksi, repository, integrasi antar modul, koordinasi tim, dan fitur dari 0 sampai akhir | |
+| Dewa Ayu Cintya Kasih | 42430054 | Frontend | Dashboard, halaman laporan, reportRoutes, ReportService, TransactionRepository.summary, implementasi app.js untuk laporan, Chart.js integrasi, Export PDF | |
+| Aleksius Darate | 42430009 | Backend (Database & Auth) | Desain & setup database, authRoutes, AuthService, ProductService, ProductRepository, koneksi Database | |
 
-## 
+> Catatan: Pastikan setiap anggota mengisi kolom "Link Video Penjelasan" dengan link video 5–7 menit sebelum pengumpulan.
 
 ## Catatan GitFlow untuk UAS
 
