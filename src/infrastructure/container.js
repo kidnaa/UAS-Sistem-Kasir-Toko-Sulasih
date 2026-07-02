@@ -8,6 +8,9 @@ import { TransactionRepository } from "./repositories/TransactionRepository.js";
 import { UserRepository } from "./repositories/UserRepository.js";
 import { PaymentStrategyFactory } from "./patterns/PaymentStrategyFactory.js";
 
+// Dependency Injection Container: satu-satunya tempat yang tahu cara
+// merakit database, repository, dan service. Service/repository lain
+// tidak pernah membuat dependensinya sendiri secara langsung.
 export function buildContainer() {
   const database = MySqlDatabase.getInstance();
   const userRepository = new UserRepository(database);
