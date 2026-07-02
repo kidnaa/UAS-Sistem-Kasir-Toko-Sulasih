@@ -1,3 +1,4 @@
+/* global Chart */
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
 if (!currentUser) {
@@ -272,6 +273,7 @@ function togglePanel(id) {
     }, 150);
   }
 }
+window.togglePanel = togglePanel;
 
 
 
@@ -320,6 +322,17 @@ els.clearCart.addEventListener("click", () => {
 });
 
 els.refreshHistory?.addEventListener("click", loadHistory);
+els.loadReport?.addEventListener("click", loadReport);
+els.exportPdf?.addEventListener("click", () => {
+  if (!els.startDate.value || !els.endDate.value) {
+    return showToast("Pilih tanggal", true);
+  }
+
+  window.open(
+    `/api/reports/pdf?startDate=${els.startDate.value}&endDate=${els.endDate.value}`,
+    "_blank"
+  );
+});
 
 
 
