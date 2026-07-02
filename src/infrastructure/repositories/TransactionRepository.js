@@ -4,33 +4,33 @@ export class TransactionRepository {
   }
 
   async findById(id) {
-  const [rows] = await this.database.query(
-    `SELECT t.id, t.invoice_number, u.name AS cashier_name,
-            t.total, t.paid_amount, t.change_amount,
-            t.payment_method, t.created_at
-     FROM transactions t
-     JOIN users u ON u.id = t.cashier_id
-     WHERE t.id = ?`,
-    [id]
-  );
+    const [rows] = await this.database.query(
+      `SELECT t.id, t.invoice_number, u.name AS cashier_name,
+              t.total, t.paid_amount, t.change_amount,
+              t.payment_method, t.created_at
+       FROM transactions t
+       JOIN users u ON u.id = t.cashier_id
+       WHERE t.id = ?`,
+      [id]
+    );
 
-  if (!rows.length) return null;
+    if (!rows.length) return null;
 
-  const transaction = rows[0];
+    const transaction = rows[0];
 
-  const [items] = await this.database.query(
-    `SELECT ti.product_id, p.name, ti.quantity, ti.price, ti.subtotal
-     FROM transaction_items ti
-     JOIN products p ON p.id = ti.product_id
-     WHERE ti.transaction_id = ?`,
-    [id]
-  );
+    const [items] = await this.database.query(
+      `SELECT ti.product_id, p.name, ti.quantity, ti.price, ti.subtotal
+       FROM transaction_items ti
+       JOIN products p ON p.id = ti.product_id
+       WHERE ti.transaction_id = ?`,
+      [id]
+    );
 
-  return {
-    ...transaction,
-    items
-  };
-}
+    return {
+      ...transaction,
+      items
+    };
+  }
 
   async create(transaction, connection) {
     const [transactionResult] = await connection.execute(
