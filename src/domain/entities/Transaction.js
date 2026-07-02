@@ -7,6 +7,7 @@ export class Transaction {
     this.paymentMethod = paymentMethod;
   }
 
+  // Menjumlahkan subtotal semua item menjadi total belanja
   total() {
     return this.items.reduce((sum, item) => sum + item.subtotal, 0);
   }
