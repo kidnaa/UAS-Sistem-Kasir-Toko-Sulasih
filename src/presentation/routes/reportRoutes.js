@@ -13,83 +13,38 @@ export function createReportRouter(reportService) {
     }
   });
 
-router.get("/pdf", async (req, res, next) => {
+  router.get("/pdf", async (req, res, next) => {
+    try {
+      const { startDate, endDate } = req.query;
+      const report = await reportService.summary(startDate, endDate);
 
-  try {
+      const doc = new PDFDocument();
 
-    const startDate =
-      req.query.startDate;
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", "attachment; filename=laporan-penjualan.pdf");
 
-    const endDate =
-      req.query.endDate;
+      doc.pipe(res);
 
-    const report =
-      await reportService.summary(
-        startDate,
-        endDate
-      );
+      doc.fontSize(20).text("Laporan Penjualan Toko Sulasih");
+      doc.moveDown();
 
-    const doc =
-      new PDFDocument();
+      doc.text(`Periode: ${startDate} s/d ${endDate}`);
+      doc.moveDown();
 
-    res.setHeader(
-      "Content-Type",
-      "application/pdf"
-    );
+      doc.text(`Total Transaksi: ${report.transactionCount}`);
+      doc.text(`Total Pendapatan: Rp ${report.revenue.toLocaleString("id-ID")}`);
+      doc.moveDown();
 
-    res.setHeader(
-      "Content-Disposition",
-      "attachment; filename=laporan-penjualan.pdf"
-    );
+      doc.text("Produk Terlaris");
+      report.bestSellers.forEach((item, index) => {
+        doc.text(`${index + 1}. ${item.name} (${item.sold_quantity} pcs)`);
+      });
 
-    doc.pipe(res);
-
-    doc
-      .fontSize(20)
-      .text("Laporan Penjualan Toko Sulasih");
-
-    doc.moveDown();
-
-    doc.text(
-      `Periode: ${startDate} s/d ${endDate}`
-    );
-
-    doc.moveDown();
-
-    doc.text(
-      `Total Transaksi: ${report.transactionCount}`
-    );
-
-    doc.text(
-      `Total Pendapatan: Rp ${report.revenue.toLocaleString("id-ID")}`
-    );
-
-    doc.moveDown();
-
-    doc.text(
-      "Produk Terlaris" 
-    );
-
-    report.bestSellers.forEach(
-      (item, index) => {
-
-        doc.text(
-          `${index + 1}. ${item.name} (${item.sold_quantity} pcs)`
-        );
-
-      }
-    );
-
-    doc.end();
-
-  }
-  catch(error){
-
-    next(error);
-
-  }
-
-});
+      doc.end();
+    } catch (error) {
+      next(error);
+    }
+  });
 
   return router;
 }
