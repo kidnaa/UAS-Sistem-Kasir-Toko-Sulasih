@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistem Kasir Toko Sulasih</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+<main class="app-shell">
+
+
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Toko Sulasih</p>
+      <h1>Sistem Kasir</h1>
+    </div>
+
+    <div class="operator">
+      <span id="connection-status">Memuat...</span>
+      <div>
+        <strong id="current-user">Kasir</strong><br>
+        <small id="current-role"></small>
+      </div>
+      <button id="logoutBtn" class="ghost" type="button">Logout</button>
+    </div>
+  </header>
+
+  
+  <section class="stats-grid">
+    <div class="stat-card"><h3 id="today-sales">Rp 0</h3><p>Penjualan Hari Ini</p></div>
+    <div class="stat-card"><h3 id="today-transactions">0</h3><p>Transaksi Hari Ini</p></div>
+    <div class="stat-card"><h3 id="low-stock-count">0</h3><p>Produk Stok Menipis</p></div>
+    <div class="stat-card"><h3 id="total-products">0</h3><p>Total Produk</p></div>
+    <div class="stat-card"><h3 id="total-transactions">0</h3><p>Total Transaksi</p></div>
+    <div class="stat-card"><h3 id="today-revenue">Rp 0</h3><p>Pendapatan Hari Ini</p></div>
+  </section>
+
+ 
+  <section class="panel" id="reportPanel">
+
+    <div class="collapsible-header" onclick="togglePanel('reportPanel')">
+      <div>
+        <p class="label">Laporan</p>
+        <h2>Ringkasan Penjualan</h2>
+      </div>
+      <span class="collapse-icon">▼</span>
+    </div>
+
+    <div class="collapsible-content">
+
+      <div class="report-actions">
+        <input type="date" id="start-date">
+        <input type="date" id="end-date">
+
+        <button id="load-report">Tampilkan Laporan</button>
+        <button id="export-pdf">Export PDF</button>
+      </div>
+
+      <div id="report-result">
+        Pilih rentang tanggal.
+      </div>
+
+    </div>
+  </section>
+
+
+  <section class="panel" id="chartPanel">
+
+    <div class="collapsible-header" onclick="togglePanel('chartPanel')">
+      <div>
+        <p class="label">Analitik</p>
+        <h2>Grafik Penjualan</h2>
+      </div>
+      <span class="collapse-icon">▼</span>
+    </div>
+
+    <div class="collapsible-content">
+      <canvas id="sales-chart"></canvas>
+    </div>
+
+  </section>
+
+
+  <section class="workspace">
+
+
+    <section class="panel products-panel" id="productPanel">
+
+      <div class="collapsible-header" onclick="togglePanel('productPanel')">
+        <div>
+          <p class="label">Produk</p>
+          <h2>Pilih Barang</h2>
+        </div>
+        <span class="collapse-icon">▼</span>
+      </div>
+
+      <div class="collapsible-content">
+
+        <input id="search" type="search" placeholder="Cari nama, SKU, kategori">
+
+        <div id="product-list" class="product-list"></div>
+
+      </div>
+    </section>
+
+
+    <aside class="panel cart-panel" id="cartPanel">
+
+      <div class="collapsible-header" onclick="togglePanel('cartPanel')">
+        <div>
+          <p class="label">Transaksi</p>
+          <h2>Keranjang</h2>
+        </div>
+        <span class="collapse-icon">▼</span>
+      </div>
+
+      <div class="collapsible-content">
+
+        <button id="clear-cart" class="ghost" type="button">Kosongkan</button>
+
+        <div id="cart-list" class="cart-list empty">Belum ada barang.</div>
+
+        <div class="totals">
+          <div><span>Total Item</span><strong id="item-count">0</strong></div>
+          <div><span>Total Bayar</span><strong id="cart-total">Rp 0</strong></div>
+          <div><span>Kembalian</span><strong id="change-total">Rp 0</strong></div>
+        </div>
+
+        <form id="checkout-form" class="checkout-form">
+          <label>
+            Metode
+            <select id="payment-method">
+              <option value="cash">Tunai</option>
+              <option value="exact">Bayar Pas / QRIS</option>
+            </select>
+          </label>
+
+          <label>
+            Uang Dibayar
+            <input id="paid-amount" type="number" min="0" placeholder="0">
+          </label>
+
+          <button id="pay-button" type="submit">Bayar Sekarang</button>
+        </form>
+
+      </div>
+    </aside>
+
+  </section>
+
+  <section class="lower-grid">
+
+
+    <section class="panel add-panel" id="addPanel">
+
+      <div class="collapsible-header" onclick="togglePanel('addPanel')">
+        <div>
+          <p class="label">Inventori</p>
+          <h2>Tambah Produk</h2>
+        </div>
+        <span class="collapse-icon">▼</span>
+      </div>
+
+      <div class="collapsible-content">
+        <form id="product-form" class="product-form">
+          <input name="sku" placeholder="SKU" required>
+          <input name="name" placeholder="Nama produk" required>
+          <input name="category" placeholder="Kategori" required>
+          <input name="price" type="number" min="1" placeholder="Harga" required>
+          <input name="stock" type="number" min="0" placeholder="Stok" required>
+          <input name="minimumStock" type="number" min="0" placeholder="Stok minimum" value="5">
+          <button type="submit">Simpan Produk</button>
+        </form>
+      </div>
+
+    </section>
+
+
+    <section class="panel history-panel" id="historyPanel">
+
+      <div class="collapsible-header" onclick="togglePanel('historyPanel')">
+        <div>
+          <p class="label">Riwayat</p>
+          <h2>Transaksi Terakhir</h2>
+        </div>
+        <span class="collapse-icon">▼</span>
+      </div>
+
+      <div class="collapsible-content">
+
+        <button id="refresh-history" class="ghost" type="button">Muat ulang</button>
+
+        <div id="history-list" class="history-list empty">Belum ada transaksi.</div>
+
+      </div>
+
+    </section>
+
+  </section>
+
+  <div id="toast" class="toast" hidden></div>
+
+</main>
+
+<script src="./app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+function togglePanel(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle("collapsed");
+}
+</script>
+
+</body>
+</html>

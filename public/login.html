@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login Sistem Kasir</title>
+
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#f5f5f5;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.card{
+  width:350px;
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  margin-bottom:15px;
+  box-sizing:border-box;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  cursor:pointer;
+}
+
+#error{
+  color:red;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Login Sistem Kasir</h2>
+
+<input id="username" placeholder="Username">
+
+<input
+  id="password"
+  type="password"
+  placeholder="Password">
+
+<button id="loginBtn">
+Masuk
+</button>
+
+<div id="error"></div>
+
+</div>
+
+<script>
+
+document
+.getElementById("loginBtn")
+.addEventListener("click", async () => {
+
+  try {
+
+    const username =
+      document.getElementById("username").value;
+
+    const password =
+      document.getElementById("password").value;
+
+    const response =
+      await fetch("/api/auth/login", {
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+          username,
+          password
+        })
+
+      });
+
+    const data = await response.json();
+
+    if(!response.ok){
+      throw new Error(data.message);
+    }
+
+    localStorage.setItem(
+      "currentUser",
+      JSON.stringify(data.user)
+    );
+
+    window.location.href="/";
+
+  }
+  catch(error){
+
+    document
+      .getElementById("error")
+      .textContent = error.message;
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>

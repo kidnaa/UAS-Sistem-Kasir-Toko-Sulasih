@@ -1,0 +1,24 @@
+{
+  "name": "uas-sistem-kasir-toko-sulasih",
+  "version": "1.0.0",
+  "description": "MVP sistem kasir Toko Sulasih berbasis Node.js, Express, dan MySQL.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0",
+    "pdfkit": "^0.19.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0"
+  }
+}
