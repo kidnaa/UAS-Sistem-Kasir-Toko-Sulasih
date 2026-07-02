@@ -1,66 +1,183 @@
 # Sistem Kasir Toko Sulasih
 
-Sistem Kasir Toko Sulasih adalah aplikasi POS sederhana untuk proses penjualan, pengelolaan produk, stok barang, riwayat transaksi, dan laporan penjualan. Proyek ini adalah implementasi UAS dari rancangan SRS/UTS.
+> Ujian Akhir Semester (UAS) — Rekayasa Perangkat Lunak — Semester 2025/2026
 
-## Fitur Utama
+Dosen Pengampu: Gede Humaswara Prathama, S.T., M.T. & I Gusti Ngurah Darma Paramartha, S.T., M.T.
 
-- Login pengguna melalui API dengan role owner, admin, dan kasir.
-- Manajemen produk: tambah produk, lihat daftar produk, cari produk, dan indikator stok menipis.
-- Transaksi penjualan: pilih produk, hitung total otomatis, input pembayaran, hitung kembalian, dan simpan transaksi.
-- Stok otomatis berkurang setelah transaksi berhasil.
-- Riwayat transaksi terakhir.
-- Laporan penjualan berdasarkan periode melalui endpoint report.
+Sifat Ujian: Proyek Kelompok (Kelompok UTS yang Sama)
+Metode Pengumpulan: Repositori GitHub & Video Penjelasan Individu
 
-## Akun Demo
+---
 
+## 1. Deskripsi Sistem
+Sistem Kasir Toko Sulasih adalah aplikasi POS sederhana yang memenuhi kebutuhan MVP untuk proses penjualan, pengelolaan produk, stok, riwayat transaksi, dan laporan penjualan. Proyek ini diimplementasikan sesuai rancangan UTS dengan fokus pada kualitas rekayasa perangkat lunak: arsitektur terpisah, penerapan design pattern, standar pengkodean, dan alur kolaborasi GitHub yang benar.
+
+## 2. Fitur Utama (MVP)
+- Otentikasi pengguna (role: owner, admin, kasir)
+- Manajemen produk (tambah, ubah, hapus, daftar, pencarian, indikator stok menipis)
+- Transaksi penjualan dengan perhitungan total, input pembayaran, dan kembalian
+- Stok otomatis berkurang setelah transaksi
+- Riwayat transaksi dan laporan penjualan per periode
+
+## 3. Demo / Akun Pengujian
 | Role | Username | Password |
 | --- | --- | --- |
 | Owner | owner | owner123 |
 | Admin | admin | admin123 |
 | Kasir | kasir | kasir123 |
 
-## Cara Menjalankan Lokal
+---
 
-1. Jalankan MySQL dari XAMPP dan pastikan aktif di port 3306.
-2. Buat database kasir_toko_sulasih lewat phpMyAdmin.
-3. Import file database.sql ke database tersebut.
-4. Pastikan file .env memakai APP_PORT=3000, DB_HOST=localhost, DB_PORT=3306, DB_USER=root, DB_PASSWORD kosong, dan DB_NAME=kasir_toko_sulasih.
-5. Jalankan npm install.
-6. Jalankan npm start.
-7. Buka http://localhost:3000 di browser.
+## 4. Persyaratan
+- Node.js (versi LTS direkomendasikan)
+- npm
+- MySQL (mis. lewat XAMPP) berjalan di port 3306
 
-## Arsitektur
+## 5. Setup & Cara Menjalankan (Lokal)
+1. Clone repo:
+```bash
+git clone https://github.com/kidnaa/UAS-Sistem-Kasir-Toko-Sulasih.git
+cd UAS-Sistem-Kasir-Toko-Sulasih
+```
+2. Buat database dan import schema:
+- Jalankan MySQL (contoh: XAMPP)
+- Buat database `kasir_toko_sulasih` lewat phpMyAdmin atau CLI
+- Import file `database.sql` (terletak di root)
 
-Proyek menggunakan Layered Architecture dengan pembagian berikut:
+3. Environment:
+- Salin file `.env.example` menjadi `.env` (file contoh disertakan di repo)
+- Pastikan variabel berikut disesuaikan jika perlu:
+  - APP_PORT=3000
+  - DB_HOST=localhost
+  - DB_PORT=3306
+  - DB_USER=root
+  - DB_PASSWORD=
+  - DB_NAME=kasir_toko_sulasih
 
-| Layer | Lokasi | Tanggung Jawab |
-| --- | --- | --- |
-| Presentation | src/presentation dan public | Route API Express dan tampilan web kasir |
-| Application/Service | src/application/services | Aturan bisnis login, produk, transaksi, dan laporan |
-| Domain | src/domain/entities | Entitas inti seperti Product dan Transaction |
-| Infrastructure | src/infrastructure | Koneksi database, repository, container, dan pattern teknis |
+4. Install dependencies dan jalankan:
+```bash
+npm install
+npm start
+```
+5. Buka: http://localhost:3000
 
-## Design Pattern
+Catatan: Jika tidak ada file `.env.example`, buatlah dengan variabel yang disebutkan di atas.
 
-| Pattern | File | Tujuan |
-| --- | --- | --- |
-| Singleton | src/infrastructure/database/MySqlDatabase.js | Memastikan pool database dibuat satu kali dan dipakai ulang |
-| Strategy | src/infrastructure/patterns/PaymentStrategyFactory.js | Memisahkan aturan pembayaran tunai dan pembayaran pas |
-| Factory | src/infrastructure/patterns/PaymentStrategyFactory.js | Membuat strategi pembayaran berdasarkan metode transaksi |
-| Dependency Injection/Container | src/infrastructure/container.js | Menyusun dependency service dan repository agar layer terpisah |
+---
 
-## Linter
+## 6. Arsitektur & Struktur Proyek
+Kami menerapkan Layered Architecture (Presentation / Application / Domain / Infrastructure). Struktur folder penting:
 
-Jalankan npm run lint untuk membuktikan kode bebas error linter.
+```
+src/
+  server.js                  # entrypoint Express
+  presentation/              # route API dan handler HTTP
+  application/
+    services/                # logika bisnis: AuthService, ProductService, TransactionService, ReportService
+  domain/
+    entities/                # entitas: Product.js, Transaction.js
+  infrastructure/
+    database/                # koneksi DB (MySqlDatabase.js - Singleton)
+    repositories/            # akses data / SQL wrapper
+    container.js             # dependency injection / wiring
+public/                      # frontend statis untuk tampilan kasir
+database.sql                  # schema + seed untuk MySQL
+README.md
+docs/                         # dokumentasi tambahan / diagram UML
+```
 
-## Kontribusi Anggota
+How it fits together singkat:
+- `server.js` mendaftarkan route di `presentation`.
+- Route memanggil service di `application/services`.
+- Service berinteraksi dengan repository di `infrastructure/repositories`, yang memakai `MySqlDatabase.js` untuk koneksi.
+- `container.js` menyusun dependensi sehingga layer atas tidak langsung membuat koneksi DB.
 
-| Nama | NIM | Peran | Fitur yang Dikerjakan | Link Video |
+## 7. Design Patterns (dokumentasi & lokasi file)
+Minimum 2 GoF patterns harus diterapkan — yang digunakan di repo ini:
+- Singleton
+  - File: `src/infrastructure/database/MySqlDatabase.js`
+  - Tujuan: memastikan hanya ada satu pool koneksi MySQL yang dipakai seluruh aplikasi.
+- Factory / Strategy (kombinasi)
+  - File: `src/infrastructure/patterns/PaymentStrategyFactory.js` (jika tersedia)
+  - Tujuan: memilih strategi pembayaran yang sesuai (tunai atau kredit) tanpa mengubah kode transaksi.
+
+(Jika pattern lain diterapkan, cantumkan di sini dengan file dan penjelasan singkat.)
+
+---
+
+## 8. Software Construction & GitFlow (Aturan Tim)
+Tim wajib mengikuti aturan berikut untuk penilaian:
+
+1. Linter & Formatting
+- Gunakan ESLint (repo sudah berisi `eslint.config.js`). Pastikan kode bebas error linter.
+- Jalankan: `npm run lint` (sesuaikan script di `package.json`).
+
+2. Branching & GitFlow
+- Jangan commit langsung ke `main` atau `develop`.
+- Setiap fitur dikerjakan di branch `feature/<nama-fitur>`.
+- Merge ke `develop` lewat Pull Request (PR) dan wajib direview minimal 1 rekan.
+
+3. Conventional Commits
+- Gunakan format pesan commit: `feat:`, `fix:`, `docs:`, `refactor:`, dsb.
+
+4. Pull Request
+- PR harus berisi deskripsi singkat, issue/tujuan, dan langkah pengujian.
+- Reviewer wajib meninggalkan komentar atau approval sebelum merge.
+
+---
+
+## 9. Deliverables (untuk pengumpulan UAS)
+Pastikan repositori berisi:
+1. README.md utama (file ini) yang memuat:
+   - Deskripsi sistem & instruksi menjalankan lokal
+   - Tabel kontribusi anggota (nama, NIM, peran, fitur, link video)
+   - Penjelasan arsitektur dan daftar design pattern + lokasi file
+2. Kode terstruktur sesuai arsitektur
+3. Folder `docs/` berisi diagram UML (jika ada pembaruan)
+4. File `database.sql` untuk setup DB
+5. File `.env.example` (contoh variabel lingkungan)
+
+## 10. Tabel Kontribusi Anggota (Contoh — isi oleh anggota)
+| Nama | NIM | Peran | Fitur yang Dikerjakan | Link Video Penjelasan |
 | --- | --- | --- | --- | --- |
-| Nama Anggota 1 | NIM | Backend/Frontend/Dokumentasi | Isi fitur | Link video |
-| Nama Anggota 2 | NIM | Backend/Frontend/Dokumentasi | Isi fitur | Link video |
-| Nama Anggota 3 | NIM | Backend/Frontend/Dokumentasi | Isi fitur | Link video |
+| Nama Anggota 1 | 123456 | Backend | Transaksi, Repository | https://... |
+| Nama Anggota 2 | 234567 | Frontend | UI Kasir, Public Assets | https://... |
+| Nama Anggota 3 | 345678 | Integrasi & DOCS | README, UML, Deployment | https://... |
 
-## Catatan GitFlow untuk UAS
+(Isi tabel ini dengan data anggota Anda sebelum pengumpulan.)
 
-Pengembangan ideal dilakukan melalui branch feature/nama-fitur, Pull Request ke develop, review oleh anggota lain, lalu merge menuju branch utama sesuai aturan kelompok.
+---
+
+## 11. Video Penjelasan Individu
+Setiap anggota harus mengunggah video 5-7 menit yang menampilkan:
+1. Riwayat commit / branch yang dikerjakan (tunjukkan PR Anda)
+2. Demo kode yang Anda tulis dan jelaskan bagaimana pemisahan layer diterapkan
+3. Jelaskan satu design pattern yang Anda implementasikan (letak file & alasan)
+4. Tunjukkan bahwa kode Anda bebas linter dan jelaskan prinsip clean code yang diterapkan
+
+Video harus menampilkan wajah (webcam) dan screencast. Upload ke YouTube (Unlisted) atau Google Drive, dan masukkan link ke tabel kontribusi di README.
+
+---
+
+## 12. Checklist Pra-Pengumpulan
+- [ ] README lengkap sesuai format UAS
+- [ ] `.env.example` tersedia
+- [ ] `database.sql` bisa di-import tanpa error
+- [ ] Kode lint-clean: `npm run lint` -> no errors
+- [ ] Semua fitur MVP berfungsi pada testing lokal
+- [ ] PR dan branch sesuai GitFlow, pesan commit sesuai Conventional Commits
+- [ ] Video individu diunggah dan link dimasukkan di README
+
+---
+
+## 13. Lisensi
+Tambahkan file LICENSE (mis. MIT) jika diperlukan.
+
+---
+
+Jika Anda mau, saya bisa:
+- Menambahkan/ memperbarui file `.env.example` di repo,
+- Menambahkan checklist `docs/` atau template diagram UML,
+- Membuat template Pull Request dan template issue untuk mempermudah alur GitFlow.
+
+Isi tabel kontribusi di README dengan data anggota, lalu beri tahu saya jika ingin saya commit perubahan tambahan (mis. .env.example atau LICENSE).
