@@ -58,7 +58,7 @@ Jalankan npm run lint untuk membuktikan kode bebas error linter.
 | Nama | NIM | Peran | Fitur yang Dikerjakan | Link Video Penjelasan |
 | --- | --- | --- | --- | --- |
 | Krisna Aji Manggala | 42430013 | Backend (Lead) | Implementasi transaksi, repository, integrasi antar modul, koordinasi tim, dan fitur dari 0 sampai akhir | |
-| Dewa Ayu Cintya Kasih | 42430054 | Frontend | Dashboard, halaman laporan, reportRoutes, ReportService, TransactionRepository.summary, implementasi app.js, Chart.js integrasi, Export PDF | |
+| Dewa Ayu Cintya Kasih | 42430054 | Frontend | Dashboard, halaman laporan, reportRoutes, ReportService, TransactionRepository.summary, implementasi app.js, Chart.js integrasi, Export PDF |https://drive.google.com/file/d/1ihbTUT8mYTwtPnOHJzxvLIJyf0XbxUO2/view?usp=drivesdk |
 | Aleksius Darate | 42430009 | Backend (Database & Auth) | Desain & setup database, authRoutes, AuthService, ProductService, ProductRepository, koneksi Database | |
 
 > Catatan: Pastikan setiap anggota mengisi kolom "Link Video Penjelasan" dengan link video 5–7 menit sebelum pengumpulan.
